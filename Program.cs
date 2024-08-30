@@ -21,8 +21,10 @@ public class Program
     {
         public string discord_link = string.Empty;
         public string token = string.Empty;
+        public ulong guild_id = 0;
         public string discord_link_beta = string.Empty;
         public string token_beta = string.Empty;
+        public ulong guild_id_beta = 0;
 
         public ConfigurationClass()
         {
@@ -30,6 +32,7 @@ public class Program
             token = string.Empty;
             token_beta = string.Empty;
             discord_link = string.Empty;
+            guild_id = 0;
         }
     }
 
@@ -71,7 +74,7 @@ public class Program
             await _client.StartAsync();
 
             // Start Command Handler
-            var commandHandler = new CommandHandler(_client, _commandService, _serviceProvider, BotConfiguration.Instance.Prefix);
+            var commandHandler = new CommandHandler(_client, _commandService, _serviceProvider);
             await commandHandler.InstallCommandsAsync();
 
             // Block this task until the program is closed.
@@ -106,6 +109,7 @@ public class Program
                 token = discordCfg.token_beta;
                 BotConfiguration.Instance.DevMode = true;
                 BotConfiguration.Instance.Discord_Link = discordCfg.discord_link_beta;
+                BotConfiguration.Instance.Guild_Id = discordCfg.guild_id_beta;
                 Console.WriteLine("==> Start in beta mode\n");
             }
             // Production Bot version
@@ -114,6 +118,7 @@ public class Program
                 token = discordCfg.token;
                 BotConfiguration.Instance.DevMode = false;
                 BotConfiguration.Instance.Discord_Link = discordCfg.discord_link;
+                BotConfiguration.Instance.Guild_Id = discordCfg.guild_id;
                 Console.WriteLine("==> Start in production mode\n");
             }
 
@@ -185,7 +190,7 @@ public class Program
         // In dev mode, commands are only created on Guild
         if (IsDevMode() == true)
         {
-            var guild = _client.GetGuild(#yourguild_id);
+            var guild = _client.GetGuild(BotConfiguration.Instance.Guild_Id);
 
             destination = guild;
             applicationCommands = await guild.GetApplicationCommandsAsync();

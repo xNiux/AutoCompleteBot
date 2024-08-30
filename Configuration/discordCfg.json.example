@@ -1,6 +1,8 @@
 {
   "discord_link": "",
   "token": "",
+  "guild_id": "",
   "discord_link_beta": "",
-  "token_beta": ""
+  "token_beta": "",
+  "guild_id_beta": ""
 }
